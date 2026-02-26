@@ -1,6 +1,7 @@
-1. Project Overview
+Rayeva AI – Structured Product Categorization System
+Project Overview
 
-Modern e-commerce platforms rely on structured product categorization for:
+Modern e-commerce platforms require structured product categorization for:
 
 Search optimization
 
@@ -10,19 +11,19 @@ Sustainability filtering
 
 Analytics and reporting
 
-However, Large Language Models (LLMs) typically produce unstructured and unreliable outputs.
+However, Large Language Models (LLMs) typically produce unstructured and unpredictable outputs.
 
 This project demonstrates a controlled AI integration architecture where:
 
 AI outputs are strictly structured
 
-Business logic validates AI results
+Business logic validates AI responses
 
 Only verified data is stored in the database
 
 AI is treated as a suggestion engine, not a decision authority
 
-2. Architecture Overview
+Architecture Overview
 User Input
     ↓
 Business Logic Layer (process_product)
@@ -38,26 +39,23 @@ Database Storage (SQLite)
 Logging
 Design Principle
 
-The system separates responsibilities clearly:
+The system follows separation of concerns:
 
 Layer	Responsibility
-AI Layer	Generates structured metadata
+AI Layer	Generates structured product metadata
 Validation Layer	Ensures schema correctness
 Business Logic Layer	Enforces deterministic rules
 Database Layer	Stores validated data
-Logging Layer	Tracks system activity
+Logging Layer	Tracks system interactions
+Structured AI Output Enforcement
 
-This separation ensures reliability and maintainability.
-
-3. Structured AI Output Enforcement
-
-All AI outputs must follow this JSON structure:
+All AI outputs must follow this JSON schema:
 
 {
   "primary_category": "string",
   "sub_category": "string",
-  "seo_tags": ["list"],
-  "sustainability_filters": ["list"]
+  "seo_tags": ["list of strings"],
+  "sustainability_filters": ["list of strings"]
 }
 
 Validation ensures:
@@ -66,25 +64,21 @@ Required keys are present
 
 Data types are correct
 
-AI hallucinations are rejected
+Hallucinated outputs are rejected
 
-Only trusted outputs enter the system
+Only structured data enters the database
 
-This prevents malformed data from corrupting business workflows.
+Business Logic Grounding
 
-4. Business Logic Grounding
-
-The AI does not have full authority.
-
-Business rules restrict allowed categories:
+AI outputs are constrained using a whitelist:
 
 ALLOWED_CATEGORIES = ["Personal Care", "Home", "Electronics"]
 
-If AI generates an invalid category, the system rejects it immediately.
+If the AI generates an invalid category, the system raises an error and blocks insertion.
 
-This demonstrates deterministic control over probabilistic AI outputs.
+This ensures deterministic control over probabilistic AI outputs.
 
-5. Error Handling Strategy
+Error Handling Strategy
 
 The system includes:
 
@@ -94,11 +88,9 @@ Category whitelist enforcement
 
 Controlled exception handling
 
-Runtime restart validation for reproducibility
+Runtime restart validation to ensure reproducibility
 
-This ensures stability in production-like scenarios.
-
-6. Database Integration
+Database Integration
 
 Validated product data is stored in SQLite with:
 
@@ -112,23 +104,9 @@ SEO tags
 
 Sustainability filters
 
-Only validated data is inserted into the database.
+Only validated outputs are inserted into the database.
 
-7. Practical Use Case
-
-This architecture can be extended to:
-
-E-commerce product automation
-
-AI-powered inventory classification
-
-Sustainable product filtering
-
-Automated SEO tag generation
-
-Enterprise AI integration pipelines
-
-8. How to Run
+How to Run
 
 Restart runtime
 
@@ -138,25 +116,25 @@ Execute:
 
 process_product("Bamboo Toothbrush", "Eco friendly oral care product")
 
-View database records:
+View stored records:
 
 cursor.execute("SELECT * FROM products")
 cursor.fetchall()
-9. Key Engineering Highlights
+Engineering Highlights
 
 Clear separation of AI and business logic
 
 Strict structured output enforcement
 
-Deterministic rule validation
+Deterministic validation layer
 
 Database persistence
 
-Production-style architecture thinking
+Enterprise-style architecture thinking
 
-10. Conclusion
+Conclusion
 
-This project demonstrates how to integrate AI into business systems responsibly by:
+This project demonstrates responsible AI integration by:
 
 Treating AI as probabilistic
 
